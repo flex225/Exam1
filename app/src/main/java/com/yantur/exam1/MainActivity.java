@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("image/*");
                 Bitmap bitmap = myView.getBitmap();
-                Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "Title", null));
+                Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "image", null));
                 shareIntent.putExtra(Intent.EXTRA_STREAM,uri);
 
                 startActivity(Intent.createChooser(shareIntent, "Select application to share"));
