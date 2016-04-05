@@ -56,31 +56,39 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "Title", null));
                 shareIntent.putExtra(Intent.EXTRA_STREAM,uri);
 
-                final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                startActivity(Intent.createChooser(shareIntent, "Select application to share"));
 
-                final NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                sendNotification();
 
-                builder.setSmallIcon(R.drawable.ic_launcher);
-                builder.setContentTitle("Share");
-                builder.setContentText("Share Complete");
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("ART", "OK");
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        builder.setContentText("Share Complete.");
-                        manager.notify(NOTIFICATION_ID, builder.build());
-                    }
-                });
-                thread.start();
 
                 }
         return true;
+    }
+
+    private void sendNotification() {
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+        final NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setContentTitle("Share");
+        builder.setContentText("Share Complete");
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("ART", "OK");
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                builder.setContentText("Share Complete.");
+                manager.notify(NOTIFICATION_ID, builder.build());
+            }
+        });
+        thread.start();
     }
 
 
