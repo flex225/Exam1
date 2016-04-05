@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -22,8 +23,6 @@ public class CustomView extends View {
     Bitmap backgroundBitmap;
     private List<Integer> colorRes;
     private List<MyCircle> circles;
-    private float touchX = 0;
-    private float touchY = 0;
 
     public CustomView(Context context, AttributeSet attrs) {
         super(context,attrs);
@@ -42,9 +41,8 @@ public class CustomView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (backgroundBitmap != null) {
-            backgroundBitmap.setHeight(canvas.getHeight());
-            backgroundBitmap.setWidth(canvas.getWidth());
-            canvas.drawBitmap(backgroundBitmap, 0, 0, null);
+            Rect rect = new Rect(0,0,getWidth(),getHeight());
+            canvas.drawBitmap(backgroundBitmap, null,rect, null);
         }
         for (int i = circles.size() - 1; i >= 0; i--) {
             canvas.drawCircle(circles.get(i).getX(), circles.get(i).getY(), circles.get(i).getRadius(), circles.get(i).getPaint());
@@ -64,6 +62,15 @@ public class CustomView extends View {
         return true;
     }
 
+    public Bitmap getBitmap(){
+        setDrawingCacheEnabled(true);
+        buildDrawingCache();
+
+        Bitmap bitmap = Bitmap.createBitmap(getDrawingCache());
+        setDrawingCacheEnabled(false);
+
+        return bitmap;
+    }
     public void setBackgroundBitmap(Bitmap bitmap) {
         backgroundBitmap = bitmap;
     }
